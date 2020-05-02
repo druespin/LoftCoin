@@ -1,11 +1,48 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/dark_six</item>
+        <item name="colorPrimaryDark">@color/grey_blue</item>
+        <item name="android:colorBackground">?attr/colorPrimary</item>
+        <item name="buttonWelcome">@style/Widget.AppTheme.ButtonWelcome</item>
+        <item name="textAppearanceHeadline1">@style/TextAppearance.AppTheme.H1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.AppTheme.H2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.AppTheme.H3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.AppTheme.H4</item>
+    </style>
+
+    <style name="Widget.AppTheme.ButtonWelcome" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">248dp</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@string/start</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">@drawable/btn_welcome</item>
+    </style>
+    
+    <attr name="buttonWelcome" format="reference"/>
+
+    <style name="TextAppearance.AppTheme" parent="TextAppearance.MaterialComponents.Body1"/>
+
+    <style name="TextAppearance.AppTheme.H1">
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.H2">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.H3">
+        <item name="android:textSize">146sp</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.H4">
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>
