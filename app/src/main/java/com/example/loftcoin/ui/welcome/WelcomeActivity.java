@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 import com.example.loftcoin.databinding.ActivityWelcomeBinding;
-import com.example.loftcoin.ui.MainActivity;
+import com.example.loftcoin.ui.main.MainActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -29,6 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
         binding.recycler.setLayoutManager(
                 new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
+        binding.recycler.addItemDecoration(new WelcomePageIndicator(this));
         binding.recycler.setAdapter(new WelcomeAdapter());
         helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.recycler);

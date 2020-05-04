@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
-        app:layout_constraintBottom_toTopOf="@+id/title"
+        app:layout_constraintBottom_toTopOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:src="@drawable/asset_1"/>
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceHeadline2"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/subtitle"
+        app:layout_constraintBottom_toTopOf="@id/subtitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/title_1" />
@@ -35,7 +35,7 @@
         android:textAppearance="?attr/textAppearanceHeadline4"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="44dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/subtitle_1"

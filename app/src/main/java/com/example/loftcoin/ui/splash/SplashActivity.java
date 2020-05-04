@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loftcoin.R;
-import com.example.loftcoin.ui.MainActivity;
+import com.example.loftcoin.ui.main.MainActivity;
 import com.example.loftcoin.ui.welcome.WelcomeActivity;
 
 public class SplashActivity extends AppCompatActivity {
