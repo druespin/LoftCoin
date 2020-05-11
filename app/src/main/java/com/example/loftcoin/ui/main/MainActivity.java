@@ -14,6 +14,7 @@ import com.example.loftcoin.databinding.ActivityWelcomeBinding;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,8 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         setContentView(binding.getRoot());
 
-        final NavController navController = Navigation
-                .findNavController(this, R.id.main_host);
+        final NavController navController = Navigation.findNavController(this, R.id.main_host);
         NavigationUI.setupWithNavController(binding.bottomNav, navController);
         NavigationUI.setupWithNavController(
                 binding.toolbar, navController, new AppBarConfiguration

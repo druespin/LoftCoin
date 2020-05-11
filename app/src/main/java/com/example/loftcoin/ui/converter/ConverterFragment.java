@@ -1,4 +1,4 @@
-package com.example.loftcoin.ui.main;
+package com.example.loftcoin.ui.converter;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
