@@ -7,19 +7,43 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.33"/>
 
     <ImageView
         android:id="@+id/wallet_card"
         android:layout_width="240dp"
         android:layout_height="160dp"
-        android:background="@drawable/add_new_wallet_img"
+        android:background="@drawable/wallet_card_bg"
         android:src="@drawable/ic_add_wallet"
         android:scaleType="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_wallets"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="80dp" />
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/li_wallet"
+        tools:orientation="horizontal" />
 
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_rates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
+        tools:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/li_transaction" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

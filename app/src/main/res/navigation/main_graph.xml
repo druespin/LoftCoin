@@ -6,19 +6,19 @@
 
     <fragment
         android:id="@+id/wallets"
-        android:name="com.example.loftcoin.ui.main.WalletsFragment"
+        android:name="com.example.loftcoin.ui.wallets.WalletsFragment"
         android:label="@string/wallets"
         android:layout="@layout/fragment_wallets" />
 
     <fragment
         android:id="@+id/rates"
-        android:name="com.example.loftcoin.ui.main.RatesFragment"
+        android:name="com.example.loftcoin.ui.rates.RatesFragment"
         android:layout="@layout/fragment_rates"
         android:label="@string/rates"/>
 
     <fragment
         android:id="@+id/converter"
-        android:name="com.example.loftcoin.ui.main.ConverterFragment"
+        android:name="com.example.loftcoin.ui.converter.ConverterFragment"
         android:layout="@layout/fragment_converter"
         android:label="@string/converter"/>
 
