@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/wallets"
+        android:icon="@drawable/ic_credit_card"
+        android:id="@+id/wallets"/>
+
+    <item
+        android:title="@string/rates"
+        android:icon="@drawable/ic_show_chart"
+        android:id="@+id/rates"/>
+
+    <item
+        android:title="@string/converter"
+        android:icon="@drawable/ic_swap_horiz"
+        android:id="@+id/converter"/>
+</menu>
