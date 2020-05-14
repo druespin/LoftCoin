@@ -14,4 +14,6 @@
     <string name="wallets">Кошельки</string>
     <string name="rates">Курс</string>
     <string name="converter">Конвертер</string>
+    <string name="сhoose_currency">Выбор валюты</string>
+    <string name="sort_by_rank">Сортировать</string>
 </resources>
