@@ -39,15 +39,14 @@ public class CmcCoinsRepo implements CoinsRepo {
     public List<? extends Coin> listings(@NonNull String currency) throws IOException {
         final Response<Listings> response = api.listings(currency).execute();
         if (response.isSuccessful()) {
-            Listings listings = response.body();
+            final Listings listings = response.body();
             if (listings != null) {
                 return listings.data();
             }
-            else {
-                final ResponseBody error = response.errorBody();
-                if (error != null) {
-                    throw new IOException(error.string());
-                }
+        } else {
+            final ResponseBody responseBody = response.errorBody();
+            if (responseBody != null) {
+                throw new IOException(responseBody.string());
             }
         }
         return Collections.emptyList();
@@ -57,9 +56,8 @@ public class CmcCoinsRepo implements CoinsRepo {
     @Override
     public LiveData<List<Coin>> listings(@NonNull Query query) {
         final MutableLiveData<Boolean> refresh = new MutableLiveData<>();
-        executor.submit(() -> refresh
-                .postValue(query.forceUpdate() || db.coins().coinsCount() == 0));
-
+        executor.submit(() -> refresh.postValue(query.forceUpdate() || db.coins().coinsCount() == 0));
+        // (t|f) ->
         return Transformations.switchMap(refresh, (r) -> {
             if (r) return fetchFromNetwork(query);
             else return fetchFromDb(query);
@@ -67,7 +65,7 @@ public class CmcCoinsRepo implements CoinsRepo {
     }
 
     private LiveData<List<Coin>> fetchFromDb(Query query) {
-        return Transformations.map(db.coins().fetchAll(), coins -> new ArrayList<>(coins));
+        return Transformations.map(db.coins().fetchAll(), ArrayList<Coin>::new);
     }
 
     private LiveData<List<Coin>> fetchFromNetwork(Query query) {
@@ -82,13 +80,12 @@ public class CmcCoinsRepo implements CoinsRepo {
                         saveCoinsIntoDb(cmcCoins);
                         liveData.postValue(new ArrayList<>(cmcCoins));
                     }
-                    else {
+                } else {
                         final ResponseBody error = response.errorBody();
                         if (error != null) {
                             throw new IOException(error.string());
                         }
                     }
-                }
             } catch (IOException e) {
                 Timber.e(e);
             }
