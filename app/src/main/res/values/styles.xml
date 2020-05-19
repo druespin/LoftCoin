@@ -1,5 +1,11 @@
 <resources>
 
+    <attr name="buttonWelcome" format="reference"/>
+    <attr name="walletCardWidth" format="dimension|reference"/>
+    <attr name="walletCardHeight" format="dimension|reference"/>
+    <attr name="textPositive" format="color|reference"/>
+    <attr name="textNegative" format="color|reference"/>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
@@ -17,14 +23,13 @@
         <item name="textAppearanceHeadline4">@style/TextAppearance.AppTheme.H4</item>
         <item name="walletCardWidth">240dp</item>
         <item name="walletCardHeight">160dp</item>
+        <item name="textPositive">@color/weird_green</item>
+        <item name="textNegative">@color/watermelon</item>
         <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
         <item name="actionBarPopupTheme">@style/AppTheme.PopupOverlay</item>
         <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigationView</item>
     </style>
 
-    <attr name="buttonWelcome" format="reference"/>
-    <attr name="walletCardWidth" format="dimension|reference"/>
-    <attr name="walletCardHeight" format="dimension|reference"/>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="android:background">?attr/colorPrimary</item>

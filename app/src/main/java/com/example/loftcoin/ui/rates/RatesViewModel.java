@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 public class RatesViewModel extends ViewModel {
 
     private final MutableLiveData<List<Coin>> coins = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isRefreshing = new MutableLiveData<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final CoinsRepo repo;
     private Future<?> future;
@@ -33,7 +34,13 @@ public class RatesViewModel extends ViewModel {
         return coins;
     }
 
+    @NonNull
+    LiveData<Boolean> isRefreshing() {
+        return isRefreshing;
+    }
+
     final void refresh() {
+        isRefreshing.postValue(true);
         future = executor.submit(() -> {
             try {
                 coins.postValue(new ArrayList<>(repo.listings("USD")));
