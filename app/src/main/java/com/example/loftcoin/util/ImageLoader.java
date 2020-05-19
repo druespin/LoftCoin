@@ -2,14 +2,13 @@ package com.example.loftcoin.util;
 
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import com.squareup.picasso.Picasso;
 
-public class ImageLoader {
+public interface ImageLoader {
 
-    public static void loadImage(@NonNull String id, @NonNull ImageView image) {
+    @NonNull
+    ImageRequest load(String id);
 
-        Picasso.get()
-                .load(id)
-                .into(image);
+    interface ImageRequest {
+        void into(@NonNull ImageView image);
     }
 }

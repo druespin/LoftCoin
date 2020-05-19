@@ -6,7 +6,7 @@ import dagger.Binds;
 import dagger.Module;
 
 @Module
-abstract class UtilsModule {
+public abstract class VMModule {
 
     @Binds
     abstract ViewModelProvider.Factory vmFactory(VMFactory impl);

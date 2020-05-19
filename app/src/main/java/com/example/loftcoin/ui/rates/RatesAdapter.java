@@ -2,12 +2,9 @@ package com.example.loftcoin.ui.rates;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Outline;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -16,16 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.loftcoin.BuildConfig;
 import com.example.loftcoin.R;
+import com.example.loftcoin.data.CmcCoin;
 import com.example.loftcoin.data.Coin;
 import com.example.loftcoin.databinding.LiRateBinding;
 import com.example.loftcoin.util.Formatter;
 import com.example.loftcoin.util.ImageLoader;
 import com.example.loftcoin.util.OutlineCircle;
-import com.example.loftcoin.util.PriceFormatter;
-import com.squareup.picasso.Picasso;
 
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.Objects;
 
 public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
@@ -34,8 +28,9 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
     private int colorNegative = Color.BLACK;
     private int colorPositive = Color.WHITE;
     private Formatter<Double> priceFormatter;
+    private ImageLoader imageLoader;
 
-    RatesAdapter(Formatter<Double> priceFormatter) {
+    RatesAdapter(Formatter<Double> priceFormatter, @NonNull ImageLoader imageLoader) {
         super(new DiffUtil.ItemCallback<Coin>() {
             @Override
             public boolean areItemsTheSame(@NonNull Coin oldItem, @NonNull Coin newItem) {
@@ -48,6 +43,7 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
             }
         });
         this.priceFormatter = priceFormatter;
+        this.imageLoader = imageLoader;
     }
 
     @Override
@@ -72,7 +68,9 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
         } else {
             holder.binding.change.setTextColor(colorNegative);
         }
-        ImageLoader.loadImage(BuildConfig.IMG_ENDPOINT + coin.id(), holder.binding.logo );
+        imageLoader
+                .load(BuildConfig.IMG_ENDPOINT + coin.id() + ".png")
+                .into(holder.binding.logo);
     }
 
     @Override
