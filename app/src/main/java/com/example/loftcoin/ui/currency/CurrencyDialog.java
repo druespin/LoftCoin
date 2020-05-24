@@ -6,28 +6,38 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.loftcoin.BaseComponent;
 import com.example.loftcoin.R;
-import com.example.loftcoin.data.Currency;
-import com.example.loftcoin.data.CurrencyRepo;
-import com.example.loftcoin.data.CurrencyRepoImpl;
 import com.example.loftcoin.databinding.DialogCurrencyBinding;
 import com.example.loftcoin.util.OnItemClick;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import javax.inject.Inject;
+
 public class CurrencyDialog extends AppCompatDialogFragment {
 
+    private final CurrencyComponent component;
     private DialogCurrencyBinding binding;
-    private CurrencyRepo currencyRepo;
+    private CurrencyViewModel currencyVM;
     private CurrencyAdapter adapter;
     private OnItemClick onItemClick;
+
+    @Inject
+    CurrencyDialog(BaseComponent baseComponent) {
+        component = DaggerCurrencyComponent.builder()
+                .baseComponent(baseComponent)
+                .build();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currencyRepo = new CurrencyRepoImpl(requireContext());
+        currencyVM = new ViewModelProvider(this, component.vmFactory())
+                .get(CurrencyViewModel.class);
         adapter = new CurrencyAdapter();
     }
 
@@ -46,12 +56,11 @@ public class CurrencyDialog extends AppCompatDialogFragment {
         super.onActivityCreated(savedInstanceState);
         binding.recyclerCurrency.setLayoutManager(new LinearLayoutManager(requireActivity()));
         binding.recyclerCurrency.setAdapter(adapter);
-        currencyRepo.availableCurrencies().observe(this, adapter::submitList);
+        currencyVM.allCurrencies().observe(this, adapter::submitList);
         onItemClick = new OnItemClick((v) -> {
             final RecyclerView.ViewHolder vh = binding.recyclerCurrency.findContainingViewHolder(v);
             if (vh != null) {
-                final Currency item = adapter.getItem(vh.getAdapterPosition());
-                currencyRepo.updateCurrency(item);
+                currencyVM.updateCurrency(adapter.getItem(vh.getAdapterPosition()));
             }
             dismissAllowingStateLoss();
         });

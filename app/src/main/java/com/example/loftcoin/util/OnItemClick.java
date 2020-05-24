@@ -17,7 +17,6 @@ public class OnItemClick implements RecyclerView.OnItemTouchListener {
         this.listener = listener;
     }
 
-
     @Override
     public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
         if (isSingleTap(e)) {

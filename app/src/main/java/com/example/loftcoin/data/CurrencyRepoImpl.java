@@ -47,7 +47,7 @@ class CurrencyRepoImpl implements CurrencyRepo {
     @NonNull
     @Override
     public LiveData<Currency> currency() {
-        return new CurrencyLivaData();
+        return new CurrencyLiveData();
     }
 
     @Override
@@ -55,7 +55,7 @@ class CurrencyRepoImpl implements CurrencyRepo {
         prefs.edit().putString(KEY_CURRENCY, currency.code()).apply();
     }
 
-    private static class CurrencyLivaData extends LiveData<Currency>
+    private static class CurrencyLiveData extends LiveData<Currency>
             implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         @Override

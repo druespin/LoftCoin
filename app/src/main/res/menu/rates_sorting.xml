@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_currency"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/sort_dialog"
+    <item android:id="@+id/sorting"
         android:title="@string/sort_by_rank"
         android:icon="@drawable/ic_sort"
         app:showAsAction="ifRoom"/>

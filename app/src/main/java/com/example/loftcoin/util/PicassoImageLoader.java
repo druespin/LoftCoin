@@ -5,18 +5,23 @@ import androidx.annotation.NonNull;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class PicassoImageLoader implements ImageLoader {
 
     private Picasso picasso;
 
+    @Inject
     public PicassoImageLoader(Picasso picasso) {
         this.picasso = picasso;
     }
 
     @NonNull
     @Override
-    public ImageRequest load(String id) {
-        return new PicassoImageRequest(picasso.load(id));
+    public ImageRequest load(String url) {
+        return new PicassoImageRequest(picasso.load(url));
     }
 
 

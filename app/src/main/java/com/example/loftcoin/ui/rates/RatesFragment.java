@@ -51,12 +51,14 @@ public class RatesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ratesVM = new ViewModelProvider(this, component.vmFactory())
                 .get(RatesViewModel.class);
-        adapter = new RatesAdapter(new PriceFormatter(), new PicassoImageLoader(Picasso.get()));
+        adapter = component.ratesAdapter();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_rates, container, false);
     }
 
@@ -84,6 +86,10 @@ public class RatesFragment extends Fragment {
             NavHostFragment
                     .findNavController(this)
                     .navigate(R.id.currency_dialog);
+            return true;
+        }
+        else if (item.getItemId() == R.id.sorting) {
+            ratesVM.switchSortingOrder();
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -8,7 +8,6 @@ import androidx.lifecycle.Transformations;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -36,64 +35,46 @@ public class CmcCoinsRepo implements CoinsRepo {
 
     @NonNull
     @Override
-    public List<? extends Coin> listings(@NonNull String currency) throws IOException {
-        final Response<Listings> response = api.listings(currency).execute();
-        if (response.isSuccessful()) {
-            final Listings listings = response.body();
-            if (listings != null) {
-                return listings.data();
-            }
-        } else {
-            final ResponseBody responseBody = response.errorBody();
-            if (responseBody != null) {
-                throw new IOException(responseBody.string());
-            }
-        }
-        return Collections.emptyList();
-    }
-
-    @NonNull
-    @Override
     public LiveData<List<Coin>> listings(@NonNull Query query) {
-        final MutableLiveData<Boolean> refresh = new MutableLiveData<>();
-        executor.submit(() -> refresh.postValue(query.forceUpdate() || db.coins().coinsCount() == 0));
-        // (t|f) ->
-        return Transformations.switchMap(refresh, (r) -> {
-            if (r) return fetchFromNetwork(query);
-            else return fetchFromDb(query);
-        });
+        fetchFromNetwork(query);
+        return fetchFromDb(query);
     }
 
     private LiveData<List<Coin>> fetchFromDb(Query query) {
-        return Transformations.map(db.coins().fetchAll(), ArrayList<Coin>::new);
+        LiveData<List<RoomCoin>> coins;
+        if (query.sortBy() == SortBy.PRICE) {
+            coins = db.coins().fetchAllSortByPrice();
+        }
+        else {
+            coins = db.coins().fetchAllSortByRank();
+        }
+        return Transformations.map(coins, ArrayList<Coin>::new);
     }
 
-    private LiveData<List<Coin>> fetchFromNetwork(Query query) {
-        final MutableLiveData<List<Coin>> liveData = new MutableLiveData<>();
+    private void fetchFromNetwork(Query query) {
         executor.submit(() -> {
-            try {
-                final Response<Listings> response = api.listings(query.currency()).execute();
-                if (response.isSuccessful()) {
-                    Listings listings = response.body();
-                    if (listings != null) {
-                        final List<AutoValue_CmcCoin> cmcCoins = listings.data();
-                        saveCoinsIntoDb(cmcCoins);
-                        liveData.postValue(new ArrayList<>(cmcCoins));
-                    }
-                } else {
+            if (query.forceUpdate() || db.coins().coinsCount() == 0) {
+                try {
+                    final Response<Listings> response = api.listings(query.currency()).execute();
+                    if (response.isSuccessful()) {
+                        Listings listings = response.body();
+                        if (listings != null) {
+                            saveCoinsIntoDb(query, listings.data());
+                        }
+                    } else {
                         final ResponseBody error = response.errorBody();
                         if (error != null) {
                             throw new IOException(error.string());
                         }
                     }
-            } catch (IOException e) {
-                Timber.e(e);
+                } catch (IOException e) {
+                    Timber.e(e);
+                }
             }
         });
-        return liveData;
     }
 
-    private void saveCoinsIntoDb(List<? extends Coin> coins) {
+    private void saveCoinsIntoDb(Query query, List<? extends Coin> coins) {
         List<RoomCoin> roomCoins = new ArrayList<>(coins.size());
         for (Coin coin: coins) {
             roomCoins.add(RoomCoin.create(
@@ -102,6 +83,7 @@ public class CmcCoinsRepo implements CoinsRepo {
                     coin.rank(),
                     coin.price(),
                     coin.change24(),
+                    query.currency(),
                     coin.id()
             ));
         }
