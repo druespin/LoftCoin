@@ -2,31 +2,34 @@ package com.example.loftcoin.ui.rates;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Outline;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.loftcoin.BuildConfig;
 import com.example.loftcoin.R;
+import com.example.loftcoin.data.CmcCoin;
 import com.example.loftcoin.data.Coin;
 import com.example.loftcoin.databinding.LiRateBinding;
 import com.example.loftcoin.util.Formatter;
 import com.example.loftcoin.util.ImageLoader;
 import com.example.loftcoin.util.OutlineCircle;
+import com.example.loftcoin.util.PercentFormatter;
 import com.example.loftcoin.util.PriceFormatter;
 import com.squareup.picasso.Picasso;
 
-import java.text.NumberFormat;
-import java.util.Locale;
+import java.util.List;
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
 
@@ -34,8 +37,13 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
     private int colorNegative = Color.BLACK;
     private int colorPositive = Color.WHITE;
     private Formatter<Double> priceFormatter;
+    private Formatter<Double> percentFormatter;
+    private ImageLoader imageLoader;
 
-    RatesAdapter(Formatter<Double> priceFormatter) {
+    @Inject
+    RatesAdapter(PriceFormatter priceFormatter,
+                 PercentFormatter percentFormatter,
+                 ImageLoader imageLoader) {
         super(new DiffUtil.ItemCallback<Coin>() {
             @Override
             public boolean areItemsTheSame(@NonNull Coin oldItem, @NonNull Coin newItem) {
@@ -46,8 +54,17 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
             public boolean areContentsTheSame(@NonNull Coin oldItem, @NonNull Coin newItem) {
                 return Objects.equals(oldItem, newItem);
             }
+
+            @Nullable
+            @Override
+            public Object getChangePayload(@NonNull Coin oldItem, @NonNull Coin newItem) {
+                return newItem;
+            }
         });
+
         this.priceFormatter = priceFormatter;
+        this.percentFormatter = percentFormatter;
+        this.imageLoader = imageLoader;
     }
 
     @Override
@@ -66,13 +83,27 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
         final Coin coin = getItem(position);
         holder.binding.symbol.setText(coin.symbol());
         holder.binding.price.setText(priceFormatter.format(coin.price()));
-        holder.binding.change.setText(priceFormatter.format(coin.change24()));
+        holder.binding.change.setText(percentFormatter.format(coin.change24()));
         if (coin.change24() >= 0) {
             holder.binding.change.setTextColor(colorPositive);
         } else {
             holder.binding.change.setTextColor(colorNegative);
         }
-        ImageLoader.loadImage(BuildConfig.IMG_ENDPOINT + coin.id(), holder.binding.logo );
+        imageLoader
+                .load(BuildConfig.IMG_ENDPOINT + coin.id() + ".png")
+                .into(holder.binding.logo);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position);
+        } else {
+            final Coin coin = (Coin) payloads.get(0);
+            holder.binding.price.setText(priceFormatter.format(coin.currencyCode(), coin.price()));
+            holder.binding.price.setText(percentFormatter.format(coin.change24()));
+        }
     }
 
     @Override

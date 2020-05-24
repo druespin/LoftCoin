@@ -1,6 +1,5 @@
 package com.example.loftcoin.util;
 
-import android.content.Context;
 import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,10 +13,9 @@ public class OnItemClick implements RecyclerView.OnItemTouchListener {
     private View.OnClickListener listener;
     private long downTime;
 
-    public void OnItemClick(@NonNull View.OnClickListener listener) {
+    public OnItemClick(@NonNull View.OnClickListener listener) {
         this.listener = listener;
     }
-
 
     @Override
     public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {

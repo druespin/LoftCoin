@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/sort_by_currency"
+    <item android:id="@+id/currency_dialog"
         android:title="@string/сhoose_currency"
         android:icon="@drawable/ic_currency"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/sort_by_rank"
+    <item android:id="@+id/sorting"
         android:title="@string/sort_by_rank"
         android:icon="@drawable/ic_sort"
         app:showAsAction="ifRoom"/>

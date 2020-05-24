@@ -1,4 +1,4 @@
-package com.example.loftcoin.ui.rates;
+package com.example.loftcoin.ui.currency;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -10,17 +10,14 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(
-        modules = {
-                RatesModule.class,
-                VMModule.class
-        }, dependencies = {
+@Component(modules = {
+        CurrencyModule.class,
+        VMModule.class
+        },
+            dependencies = {
                 BaseComponent.class
-        }
-)
-abstract class RatesComponent {
+            })
+abstract class CurrencyComponent {
 
     abstract ViewModelProvider.Factory vmFactory();
-
-    abstract RatesAdapter ratesAdapter();
 }

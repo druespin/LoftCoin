@@ -1,4 +1,4 @@
-package com.example.loftcoin.ui.rates;
+package com.example.loftcoin.ui.currency;
 
 import androidx.lifecycle.ViewModel;
 
@@ -8,10 +8,10 @@ import dagger.multibindings.ClassKey;
 import dagger.multibindings.IntoMap;
 
 @Module
-abstract class RatesModule {
+abstract class CurrencyModule {
 
     @Binds
     @IntoMap
-    @ClassKey(RatesViewModel.class)
-    abstract ViewModel ratesVM(RatesViewModel impl);
+    @ClassKey(CurrencyViewModel.class)
+    abstract ViewModel currencyVM(CurrencyViewModel impl);
 }

@@ -16,4 +16,8 @@
     <string name="converter">Конвертер</string>
     <string name="сhoose_currency">Выбор валюты</string>
     <string name="sort_by_rank">Сортировать</string>
+    <string name="choose_currency">Выбрать валюту</string>
+    <string name="usd">Доллар</string>
+    <string name="rub">Рубль</string>
+    <string name="eur">Евро</string>
 </resources>

@@ -28,6 +28,7 @@
         <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
         <item name="actionBarPopupTheme">@style/AppTheme.PopupOverlay</item>
         <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigationView</item>
+        <item name="materialAlertDialogTheme">@style/AppTheme.AlertDialog</item>
     </style>
 
 
@@ -39,6 +40,9 @@
         <item name="android:background">?attr/colorPrimaryVariant</item>
         <item name="iconTint">@color/bottom_nav_item</item>
         <item name="android:textColor">@color/bottom_nav_item</item>
+    </style>
+    <style name="AppTheme.AlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/dark_four</item>
     </style>
 
     <style name="Widget.AppTheme.ButtonWelcome" parent="Widget.MaterialComponents.TextView">
