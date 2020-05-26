@@ -9,17 +9,23 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+
 @Dao
 abstract class CoinsDao {
 
     @Query("SELECT * FROM RoomCoin")
-    abstract LiveData<List<RoomCoin>> fetchAll();
+    abstract Observable<List<RoomCoin>> fetchAll();
 
     @Query("SELECT * FROM RoomCoin ORDER BY price DESC")
-    abstract LiveData<List<RoomCoin>> fetchAllSortByPrice();
+    abstract Observable<List<RoomCoin>> fetchAllSortByPrice();
 
     @Query("SELECT * FROM RoomCoin ORDER BY rank ASC")
-    abstract LiveData<List<RoomCoin>> fetchAllSortByRank();
+    abstract Observable<List<RoomCoin>> fetchAllSortByRank();
+
+    @Query("SELECT * FROM RoomCoin WHERE id=:id")
+    abstract Single<RoomCoin> fetchOne(long id);
 
     @WorkerThread
     @Query("SELECT COUNT(id) FROM RoomCoin")

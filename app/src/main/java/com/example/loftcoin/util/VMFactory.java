@@ -14,7 +14,7 @@ public class VMFactory extends ViewModelProvider.NewInstanceFactory {
     private final Map<Class<?>, Provider<ViewModel>> providers;
 
     @Inject
-    public VMFactory(Map<Class<?>, Provider<ViewModel>> providers) {
+    VMFactory(Map<Class<?>, Provider<ViewModel>> providers) {
         this.providers = providers;
     }
 
@@ -26,6 +26,6 @@ public class VMFactory extends ViewModelProvider.NewInstanceFactory {
         if (provider != null) {
             return (T) provider.get();
         }
-         return super.create(modelClass);
+        return super.create(modelClass);
     }
 }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "440307857367",
+    "firebase_url": "https://loftcoin-5c1da.firebaseio.com",
+    "project_id": "loftcoin-5c1da",
+    "storage_bucket": "loftcoin-5c1da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440307857367:android:73fa7c913ea2ea1973fd92",
+        "android_client_info": {
+          "package_name": "com.example.loftcoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440307857367-d3dvshp1dinj0qjud9cg4h7h1b455j7i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.loftcoin",
+            "certificate_hash": "f184de338b44a45f75aa8b1d343eec36de4c96bf"
+          }
+        },
+        {
+          "client_id": "440307857367-21mmslrs0gmb3jlembja435m4bqqvu9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN-ao51PrwbwWdaF4L43a-Trqvnyuvr2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440307857367-21mmslrs0gmb3jlembja435m4bqqvu9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
