@@ -1,4 +1,4 @@
-package com.example.loftcoin.ui.wallets;
+package com.example.loftcoin.ui.converter;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,16 +11,14 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-        WalletsModule.class,
+        ConverterModule.class,
         VMModule.class
         }, dependencies = {
-        BaseComponent.class
-})
-abstract class WalletsComponent {
+                BaseComponent.class
+        })
+abstract class ConverterComponent {
 
     abstract ViewModelProvider.Factory vmFactory();
 
-    abstract WalletsAdapter walletsAdapter();
-
-    abstract TransactionsAdapter transactionsAdapter();
+    abstract CoinsDialogAdapter coinsDialogAdapter();
 }

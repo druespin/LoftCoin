@@ -123,6 +123,7 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
             super(binding.getRoot());
             this.binding = binding;
             OutlineCircle.apply(binding.logo);
+            binding.getRoot().setClipToOutline(true);
         }
     }
 }

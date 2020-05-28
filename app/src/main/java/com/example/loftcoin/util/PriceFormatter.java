@@ -43,7 +43,6 @@ public class PriceFormatter implements Formatter<Double> {
                     context.getResources().getConfiguration());
             locale = locales.get(0);
         }
-
         return NumberFormat.getCurrencyInstance(locale).format(value);
     }
 

@@ -27,6 +27,12 @@ abstract class CoinsDao {
     @Query("SELECT * FROM RoomCoin WHERE id=:id")
     abstract Single<RoomCoin> fetchOne(long id);
 
+    @Query("SELECT * FROM RoomCoin WHERE id NOT IN (:ids) ORDER BY rank ASC LIMIT 1")
+    abstract Single<RoomCoin> nextCoin(List<Integer> ids);
+
+    @Query("SELECT * FROM RoomCoin ORDER BY rank ASC LIMIT :limit")
+    abstract Observable<List<RoomCoin>> fetchTop(int limit);
+
     @WorkerThread
     @Query("SELECT COUNT(id) FROM RoomCoin")
     abstract int coinsCount();
