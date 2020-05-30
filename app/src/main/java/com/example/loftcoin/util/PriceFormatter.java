@@ -39,8 +39,9 @@ public class PriceFormatter implements Formatter<Double> {
     public String format(@NonNull String currency, @NonNull Double value) {
         Locale locale = LOCALES.get(currency);
         if (locale == null) {
-            final LocaleListCompat locales = ConfigurationCompat.getLocales(
-                    context.getResources().getConfiguration());
+            final LocaleListCompat locales = ConfigurationCompat
+                    .getLocales(context.getResources().getConfiguration());
+
             locale = locales.get(0);
         }
         return NumberFormat.getCurrencyInstance(locale).format(value);

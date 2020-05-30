@@ -3,7 +3,6 @@ package com.example.loftcoin;
 import android.app.Application;
 import android.os.StrictMode;
 
-import com.example.loftcoin.ui.main.MainActivity;
 import com.example.loftcoin.util.DebugTree;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -24,9 +23,12 @@ public class LoftApp extends Application {
                 .application(this)
                 .build();
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult ->
-                Timber.d("fcm: %s", instanceIdResult.getToken())
-        );
+//        FirebaseInstanceId
+//                .getInstance()
+//                .getInstanceId()
+//                .addOnSuccessListener(instanceIdResult ->
+//                    Timber.d("fcm: %s", instanceIdResult.getToken())
+//        );
     }
 
     public BaseComponent getComponent() {

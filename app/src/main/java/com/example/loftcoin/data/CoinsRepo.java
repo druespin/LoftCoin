@@ -18,7 +18,7 @@ public interface CoinsRepo {
     Single<Coin> coin(Currency currency, long id);
 
     @NonNull
-    Single<Coin> nextCoin(Currency currency, List<Integer> ids);
+    Single<Coin> nextCoin(@NonNull Currency currency, List<Integer> ids);
 
     @NonNull
     Observable<List<Coin>> topCoins(@NonNull Currency currency);
@@ -31,9 +31,9 @@ public interface CoinsRepo {
                 .sortBy(SortBy.RANK);
         }
 
-        abstract String currency();
-        abstract boolean forceUpdate();
-        abstract SortBy sortBy();
+        public abstract String currency();
+        public abstract boolean forceUpdate();
+        public abstract SortBy sortBy();
 
         @AutoValue.Builder
         public abstract static class Builder {

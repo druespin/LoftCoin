@@ -38,32 +38,33 @@ public class WalletsRepoImpl implements WalletsRepo {
     @Override
     public Observable<List<Wallet>> wallets(@NonNull Currency currency) {
         return Observable.<QuerySnapshot>create(emitter -> {
-            final ListenerRegistration registration = firestore
-                    .collection("wallets")
-                    .orderBy("created_at", Query.Direction.ASCENDING)
-                    .addSnapshotListener((snapshots, e) -> {
-                        if (emitter.isDisposed()) return;
-                        if (snapshots != null) {
-                            emitter.onNext(snapshots);
-                        } else if (e != null) {
-                            emitter.tryOnError(e);
-                        }
-            });
-            emitter.setCancellable(registration::remove);
-        })
-        .map(QuerySnapshot::getDocuments)
+                    final ListenerRegistration registration = firestore
+                            .collection("wallets")
+                            .orderBy("created_at", Query.Direction.ASCENDING)
+                            .addSnapshotListener((snapshots, e) -> {
+                                if (emitter.isDisposed()) return;
+                                if (snapshots != null) {
+                                    emitter.onNext(snapshots);
+                                } else if (e != null) {
+                                    emitter.tryOnError(e);
+                                }
+                            });
+                    emitter.setCancellable(registration::remove);
+                })
+                .map(QuerySnapshot::getDocuments)
                 .switchMapSingle((documents) -> Observable
                         .fromIterable(documents)
                         .flatMapSingle((document) -> coinsRepo
-                                .coin(currency, Objects.requireNonNull(
-                                        document.getLong("coinId"), "coinId"))
-                                .map(coin -> Wallet.create(
+                                .coin(currency, Objects.requireNonNull(document
+                                        .getLong("coinId"), "coinId"))
+                                .map((coin) -> Wallet.create(
                                         document.getId(),
                                         coin,
                                         document.getDouble("balance")
                                 ))
                         )
-                        .toList());
+                        .toList()
+                );
     }
 
     @NonNull

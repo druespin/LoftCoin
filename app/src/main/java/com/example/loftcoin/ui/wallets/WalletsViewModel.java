@@ -60,13 +60,13 @@ class WalletsViewModel extends ViewModel {
     @NonNull
     Completable addWallet() {
         return wallets
-            .switchMapSingle((list) -> Observable
+            .switchMapSingle(list -> Observable
                     .fromIterable(list)
                     .map(Wallet::coin)
                     .map(Coin::id)
                     .toList()
             )
-            .switchMapCompletable((ids) -> currencyRepo
+            .switchMapCompletable(ids -> currencyRepo
                     .currency()
                     .firstOrError()
                     .map((c) -> walletsRepo.addWallet(c, ids))
