@@ -32,12 +32,16 @@ public class SplashActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (prefs.getBoolean(WelcomeActivity.WELCOME_KEY, true)) {
-            goNext = () -> startActivity(new Intent(this, WelcomeActivity.class));
-            idling.idle();
-            }
+            goNext = () -> {
+                startActivity(new Intent(this, WelcomeActivity.class));
+                idling.idle();
+            };
+        }
         else {
-            goNext = () -> startActivity(new Intent(this, MainActivity.class));
-            idling.idle();
+            goNext = () -> {
+                startActivity(new Intent(this, MainActivity.class));
+                idling.idle();
+            };
         }
         handler.postDelayed(goNext, 1500);
         idling.busy();
