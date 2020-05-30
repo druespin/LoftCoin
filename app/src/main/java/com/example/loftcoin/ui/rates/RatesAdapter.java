@@ -16,15 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.loftcoin.BuildConfig;
 import com.example.loftcoin.R;
-import com.example.loftcoin.data.CmcCoin;
 import com.example.loftcoin.data.Coin;
 import com.example.loftcoin.databinding.LiRateBinding;
 import com.example.loftcoin.util.Formatter;
 import com.example.loftcoin.util.ImageLoader;
-import com.example.loftcoin.util.OutlineCircle;
+import com.example.loftcoin.widget.OutlineCircle;
 import com.example.loftcoin.util.PercentFormatter;
 import com.example.loftcoin.util.PriceFormatter;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -102,7 +100,7 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
         } else {
             final Coin coin = (Coin) payloads.get(0);
             holder.binding.price.setText(priceFormatter.format(coin.currencyCode(), coin.price()));
-            holder.binding.price.setText(percentFormatter.format(coin.change24()));
+            holder.binding.change.setText(percentFormatter.format(coin.change24()));
         }
     }
 
@@ -125,6 +123,7 @@ public class RatesAdapter extends ListAdapter<Coin, RatesAdapter.ViewHolder> {
             super(binding.getRoot());
             this.binding = binding;
             OutlineCircle.apply(binding.logo);
+            binding.getRoot().setClipToOutline(true);
         }
     }
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loftcoin.R;
@@ -21,24 +22,46 @@ public class SplashActivity extends AppCompatActivity {
 
     private Runnable goNext;
 
+    @VisibleForTesting
+    SplashIdling idling = new NoopIdling();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         if (prefs.getBoolean(WelcomeActivity.WELCOME_KEY, true)) {
-            goNext = () -> startActivity(new Intent(this, WelcomeActivity.class));
-            }
+            goNext = () -> {
+                startActivity(new Intent(this, WelcomeActivity.class));
+                idling.idle();
+            };
+        }
         else {
-            goNext = () -> startActivity(new Intent(this, MainActivity.class));
+            goNext = () -> {
+                startActivity(new Intent(this, MainActivity.class));
+                idling.idle();
+            };
         }
         handler.postDelayed(goNext, 1500);
+        idling.busy();
     }
 
     @Override
     protected void onStop() {
         handler.removeCallbacks(goNext);
         super.onStop();
+    }
+
+    private class NoopIdling implements SplashIdling {
+        @Override
+        public void busy() {
+
+        }
+
+        @Override
+        public void idle() {
+
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,21 +14,50 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.loftcoin.BaseComponent;
 import com.example.loftcoin.R;
 import com.example.loftcoin.databinding.FragmentWalletsBinding;
+import com.example.loftcoin.widget.RecyclerViews;
+
+import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 
 public class WalletsFragment extends Fragment {
 
+    private final CompositeDisposable disposable = new CompositeDisposable();
     private SnapHelper snapHelper;
 
+    private WalletsComponent component;
+    private FragmentWalletsBinding binding;
+    private WalletsViewModel walletsVM;
+    private WalletsAdapter walletsAdapter;
+    private TransactionsAdapter transactionsAdapter;
+
+
     @Inject
-    public WalletsFragment() {
+    public WalletsFragment(BaseComponent baseComponent) {
+        component = DaggerWalletsComponent.builder()
+                .baseComponent(baseComponent)
+                .build();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        walletsVM = new ViewModelProvider(this, component.vmFactory())
+                .get(WalletsViewModel.class);
+        walletsAdapter = component.walletsAdapter();
+        transactionsAdapter = component.transactionsAdapter();
     }
 
     @Override
@@ -39,7 +69,9 @@ public class WalletsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final FragmentWalletsBinding binding = FragmentWalletsBinding.bind(view);
+        setHasOptionsMenu(true);
+
+        binding = FragmentWalletsBinding.bind(view);
         snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(binding.recyclerWallets);
 
@@ -52,15 +84,49 @@ public class WalletsFragment extends Fragment {
 
         binding.recyclerWallets.setLayoutManager(
                 new LinearLayoutManager(view.getContext(), RecyclerView.HORIZONTAL, false));
-        binding.recyclerWallets.setAdapter(new WalletsAdapter());
         binding.recyclerWallets.addOnScrollListener(new CarouselScroller());
-        binding.recyclerWallets.setVisibility(View.VISIBLE);
-        binding.walletCard.setVisibility(View.GONE);
+        disposable.add(RecyclerViews
+                .onSnap(binding.recyclerWallets, snapHelper)
+                .subscribe(walletsVM::changeWallet));
+
+        binding.recyclerWallets.setAdapter(walletsAdapter);
+
+        disposable.add(walletsVM.wallets().subscribe(walletsAdapter::submitList));
+        disposable.add(walletsVM.wallets().map(List::isEmpty).subscribe(isEmpty -> {
+            binding.walletCard.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+            binding.recyclerWallets.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        }));
+
+        binding.recyclerTransactions.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        binding.recyclerTransactions.setAdapter(transactionsAdapter);
+
+        disposable.add(walletsVM.transactions()
+                .subscribe(transactionsAdapter::submitList));
+
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.wallets_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (R.id.add_wallet == item.getItemId()) {
+            disposable.add(walletsVM.addWallet().subscribe());
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onDestroyView() {
         snapHelper.attachToRecyclerView(null);
+        binding.recyclerWallets.setAdapter(null);
+        binding.recyclerTransactions.setAdapter(null);
+        disposable.clear();
         super.onDestroyView();
     }
 

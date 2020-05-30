@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,20 +18,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.loftcoin.BaseComponent;
 import com.example.loftcoin.R;
 import com.example.loftcoin.databinding.FragmentRatesBinding;
-import com.example.loftcoin.util.ImageLoader;
-import com.example.loftcoin.util.PicassoImageLoader;
-import com.example.loftcoin.util.PriceFormatter;
-import com.squareup.picasso.Picasso;
-
-import java.util.Timer;
 
 import javax.inject.Inject;
 
-import timber.log.Timber;
+import io.reactivex.disposables.CompositeDisposable;
 
 
 public class RatesFragment extends Fragment {
 
+    private final CompositeDisposable disposable = new CompositeDisposable();
     private RatesComponent component;
     private FragmentRatesBinding binding;
     private RatesAdapter adapter;
@@ -70,8 +63,8 @@ public class RatesFragment extends Fragment {
         binding.recyclerRates.setLayoutManager(new LinearLayoutManager(view.getContext()));
         binding.recyclerRates.setAdapter(adapter);
         binding.recyclerRates.setHasFixedSize(true);
-        ratesVM.coins().observe(getViewLifecycleOwner(), adapter::submitList);
-        ratesVM.isRefreshing().observe(getViewLifecycleOwner(), binding.refresher::setRefreshing);
+        disposable.add(ratesVM.coins().subscribe(adapter::submitList));
+        disposable.add(ratesVM.isRefreshing().subscribe(binding.refresher::setRefreshing));
     }
 
     @Override
@@ -98,6 +91,7 @@ public class RatesFragment extends Fragment {
     @Override
     public void onDestroyView() {
         binding.recyclerRates.swapAdapter(null, false);
+        disposable.clear();
         super.onDestroyView();
     }
 }

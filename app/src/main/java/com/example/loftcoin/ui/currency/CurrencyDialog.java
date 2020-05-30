@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.loftcoin.BaseComponent;
 import com.example.loftcoin.R;
 import com.example.loftcoin.databinding.DialogCurrencyBinding;
-import com.example.loftcoin.util.OnItemClick;
+import com.example.loftcoin.widget.OnItemClick;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import javax.inject.Inject;
@@ -69,6 +69,7 @@ public class CurrencyDialog extends AppCompatDialogFragment {
 
     @Override
     public void onDestroy() {
+        binding.recyclerCurrency.removeOnItemTouchListener(onItemClick);
         binding.recyclerCurrency.setAdapter(null);
         super.onDestroy();
     }
